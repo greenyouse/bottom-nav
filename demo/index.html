@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>bottom-nav demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../app-layout/demo/sample-content.html">
+
+    <link rel="import" href="../../app-layout/app-header-layout/app-header-layout.html">
+    <link rel="import" href="../../app-layout/app-toolbar/app-toolbar.html">
+    <link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+    <link rel="import" href="../../iron-icons/iron-icons.html">
+    <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../../paper-styles/paper-styles.html">
+    <link rel="import" href="../../paper-tabs/paper-tabs.html">
+    <link rel="import" href="../../paper-tabs/paper-tab.html">
+
+    <link rel="import" href="../bottom-nav.html">
+    <link rel="import" href="../bottom-toolbar.html">
+    <link rel="import" href="../bottom-tab.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+     bottom-nav {
+       background-color: var(--primary-color);
+       color: #fff;
+       @apply(--layout-fixed-bottom);
+     }
+
+     /* bottom-toolbar {
+        @apply(--layout-around-justified);
+        } */
+    </style>
+  </head>
+  <body>
+    <app-header-layout>
+      <!-- TODO: have it switch between layouts -->
+
+      <!-- <bottom-nav reveals>
+           <paper-tabs noink selected="0" no-bar selected-class="woot">
+           <paper-ripple></paper-ripple>
+           <paper-tab><iron-icon icon="icons:home"></iron-icon></paper-tab>
+           <paper-tab><iron-icon icon="icons:menu"></iron-icon></paper-tab>
+           <paper-tab><iron-icon icon="icons:close"></iron-icon></paper-tab>
+           <paper-tab><iron-icon icon="icons:chevron-right"></iron-icon></paper-tab>
+           </paper-tabs>
+           </bottom-nav> -->
+
+      <bottom-nav reveals>
+        <bottom-toolbar selected="0">
+
+          <!-- <paper-tab><iron-icon icon="icons:home"></iron-icon></paper-tab>
+               <paper-tab><iron-icon icon="icons:menu"></iron-icon></paper-tab>
+               <paper-tab><iron-icon icon="icons:close"></iron-icon></paper-tab>
+               <paper-tab><iron-icon icon="icons:chevron-right"></iron-icon></paper-tab> -->
+
+          <!-- <bottom-tab label="home"><iron-icon icon="icons:home"></iron-icon></bottom-tab>
+               <bottom-tab show-label label="lists"><iron-icon icon="icons:menu"></iron-icon></bottom-tab>
+               <bottom-tab label="closers"><iron-icon icon="icons:close"></iron-icon></bottom-tab>
+               <bottom-tab label="next"><iron-icon icon="icons:chevron-right"></iron-icon></bottom-tab> -->
+
+          <bottom-tab label="home" icon="icons:home"></bottom-tab>
+          <bottom-tab show-label label="lists" icon="icons:menu"></bottom-tab>
+          <bottom-tab label="closers" icon="icons:close"></bottom-tab>
+          <bottom-tab label="next" icon="icons:chevron-right"></bottom-tab>
+        </bottom-toolbar>
+      </bottom-nav>
+
+    </app-header-layout>
+
+    <sample-content size="10"></sample-content>
+
+  </body>
+</html>
