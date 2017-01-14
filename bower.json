@@ -2,6 +2,7 @@
   "name": "bottom-nav",
   "description": "Bottom navigation for mobile that follows that Material Design specification.",
   "main": "bottom-nav.html",
+  "private": true,
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "paper-tabs": "PolymerElements/paper-tabs#^1.7.0",
