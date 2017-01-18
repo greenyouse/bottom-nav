@@ -213,6 +213,8 @@ Mixin | Description | Default
         transition-timing-function: linear;
         transition-property: -webkit-transform;
         transition-property: transform;
+        z-index: 1;
+        @apply(--layout-fixed-bottom);
       }
 
       :host::after {
@@ -352,7 +354,7 @@ Mixin | Description | Default
          */
         reveals: {
           type: Boolean,
-          value: false
+          value: true
         },
 
         /**
@@ -576,7 +578,7 @@ Mixin | Description | Default
           this._lastTimestamp = now;
         }
 
-        // NOTE: quick hack to bind the header to the bottom
+        /* NOTE: quick hack to bind the header to the bottom*/
         var top = (top === 0 ||  scrollTop === 0)?
                   0 : -top;
 
