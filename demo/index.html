@@ -8,46 +8,23 @@
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../app-layout/demo/sample-content.html">
-
-    <link rel="import" href="../../app-layout/app-header-layout/app-header-layout.html">
-    <link rel="import" href="../../app-layout/app-header/app-header.html">
-    <link rel="import" href="../../app-layout/app-toolbar/app-toolbar.html">
-    <link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
-    <link rel="import" href="../../iron-icons/iron-icons.html">
-    <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
-    <link rel="import" href="../../paper-styles/paper-styles.html">
-    <link rel="import" href="../../paper-tabs/paper-tabs.html">
-    <link rel="import" href="../../paper-tabs/paper-tab.html">
-
-    <link rel="import" href="../bottom-nav.html">
-    <link rel="import" href="../bottom-toolbar.html">
-    <link rel="import" href="../bottom-tab.html">
-
-    <style is="custom-style" include="demo-pages-shared-styles">
-     bottom-nav {
-       background-color: var(--primary-color);
-       color: #fff;
+    <link rel="import" href="../../paper-styles/demo-pages.html">
+    <style>
+     li {
+       list-style: none;
      }
     </style>
   </head>
-  <body>
-    <app-header-layout>
-
-      <bottom-nav reveals>
-        <bottom-toolbar selected="0">
-          <bottom-tab label="home" icon="icons:home"></bottom-tab>
-          <bottom-tab show-label label="lists" icon="icons:menu"></bottom-tab>
-          <bottom-tab label="closers" icon="icons:close"></bottom-tab>
-          <bottom-tab label="next" icon="icons:chevron-right"></bottom-tab>
-        </bottom-toolbar>
-      </bottom-nav>
-
-    </app-header-layout>
-
-    <sample-content size="10"></sample-content>
-
+  <body unresolved>
+    <div class="horizontal-section-container">
+      <div>
+        <h4>bottom-nav demos</h4>
+        <ul>
+          <li><a href="fixed.html">Fixed Navigation (sort of iOS style)</a></li>
+          <li><a href="labels.html">Navigation with labels</a></li>
+          <li><a href="reveals.html">Reveals (Material Design style)</a></li>
+        </ul>
+      </div>
+    </div>
   </body>
 </html>
