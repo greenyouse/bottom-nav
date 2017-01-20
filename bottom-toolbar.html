@@ -305,7 +305,7 @@ Custom property | Description | Default
         'iron-items-changed': '_onTabSizingChanged',
         'iron-select': '_onIronSelect',
         'iron-deselect': '_onIronDeselect',
-        'bottom-tab-ripple': 'downAction'
+        'bottom-tab-ripple': '_downAction'
       },
 
       keyBindings: {
@@ -328,15 +328,15 @@ Custom property | Description | Default
         this._cancelPendingActivation();
       },
 
-     downAction: function(event) {
+     _downAction: function(event) {
        var x = event.detail.x,
            y = event.detail.y;
        this.$.ripple.downAction({detail: {x: x, y: y}});
 
-       this.upAction();
+       this._upAction();
      },
 
-     upAction: function() {
+     _upAction: function() {
        this.$.ripple.upAction();
      },
 
