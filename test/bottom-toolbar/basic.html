@@ -1,0 +1,325 @@
+<!doctype html>
+
+<html>
+  <head>
+
+    <title>bottom-toolbar-basic</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../bottom-tab.html">
+    <link rel="import" href="../../bottom-toolbar.html">
+    <link rel="import" href="../../../iron-test-helpers/iron-test-helpers.html">
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <bottom-toolbar>
+          <bottom-tab>ITEM ONE</bottom-tab>
+          <bottom-tab>ITEM TWO</bottom-tab>
+          <bottom-tab>ITEM THREE</bottom-tab>
+        </bottom-toolbar>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="HiddenTabs">
+      <template>
+        <bottom-toolbar hidden>
+          <bottom-tab>ITEM ONE</bottom-tab>
+          <bottom-tab>ITEM TWO</bottom-tab>
+        </bottom-toolbar>
+      </template>
+    </test-fixture>
+
+    <script>
+
+      function ensureDocumentHasFocus() {
+        window.top && window.top.focus();
+      }
+
+      suite('defaults', function() {
+
+        var tabs;
+
+        setup(function () {
+          tabs = fixture('basic');
+        });
+
+        test('to nothing selected', function() {
+          assert.equal(tabs.selected, undefined);
+        });
+
+        test('no tabs have iron-selected class', function() {
+          Array.prototype.forEach.call(tabs.querySelectorAll('bottom-tab'), function(tab) {
+            assert.isFalse(tab.classList.contains('iron-selected'));
+          });
+        });
+
+        test('to false as noink', function() {
+          assert.equal(tabs.noink, false);
+        });
+      });
+
+      suite('set the selected attribute', function() {
+
+        var tabs, index = 0;
+
+        setup(function () {
+          tabs = fixture('basic');
+          tabs.selected = index;
+        });
+
+        test('selected value', function() {
+          assert.equal(tabs.selected, index);
+        });
+
+        test('selected tab has iron-selected class', function() {
+          var tab = tabs.querySelectorAll('bottom-tab')[index];
+          assert.isTrue(tab.classList.contains('iron-selected'));
+        });
+      });
+
+      suite('select tab via click', function() {
+
+        var tabs, index = 1;
+        var tab;
+
+        setup(function () {
+          tabs = fixture('basic');
+          tab = tabs.querySelectorAll('bottom-tab')[index];
+          tab.dispatchEvent(new CustomEvent('click', {bubbles: true}));
+        });
+
+        test('selected value', function() {
+          assert.equal(tabs.selected, index);
+        });
+
+        test('selected tab has iron-selected class', function() {
+          var tab = tabs.querySelectorAll('bottom-tab')[index];
+          assert.isTrue(tab.classList.contains('iron-selected'));
+        });
+
+        test('pressing enter on tab causes a click', function(done) {
+          var clickCount = 0;
+          tab.addEventListener('click', function onTabClick() {
+            clickCount++;
+            tab.removeEventListener('click', onTabClick);
+
+            expect(clickCount).to.be.equal(1);
+            done();
+          });
+
+          MockInteractions.pressEnter(tab);
+        });
+      });
+
+      suite('noink attribute', function() {
+        var tabs;
+
+        setup(function () {
+          tabs = fixture('basic');
+        });
+
+        test('noink attribute propagates to all descendant tabs', function() {
+          tabs.noink = true;
+          tabs.items.forEach(function(tab) {
+            assert.isTrue(tab.hasAttribute('noink'));
+          });
+
+          tabs.noink = false;
+          tabs.items.forEach(function(tab) {
+            assert.isFalse(tab.hasAttribute('noink'));
+          });
+        });
+      });
+
+      suite('accessibility', function() {
+        var LEFT = 37;
+        var RIGHT = 39;
+        var tabs;
+
+        setup(function () {
+          tabs = fixture('basic');
+          Polymer.dom.flush();
+        });
+
+        test('bottom-toolbar has role tablist', function() {
+          assert.equal(tabs.getAttribute('role'), 'tablist');
+        });
+
+        test('bottom-tab has role tab', function() {
+          tabs.items.forEach(function(tab) {
+            assert.equal(tab.getAttribute('role'), 'tab');
+          });
+        });
+
+        test('without autoselect, tabs are not automatically selected',
+          function(done) {
+            ensureDocumentHasFocus();
+            Polymer.Base.async(function() {
+              tabs.select(0);
+              MockInteractions.pressAndReleaseKeyOn(tabs.selectedItem, RIGHT);
+              Polymer.Base.async(function() {
+                assert.equal(tabs.selected, 0);
+
+                MockInteractions.pressAndReleaseKeyOn(tabs.selectedItem, LEFT);
+                Polymer.Base.async(function() {
+                  assert.equal(tabs.selected, 0);
+
+                  MockInteractions.pressAndReleaseKeyOn(tabs.selectedItem, LEFT);
+                  Polymer.Base.async(function() {
+                    assert.equal(tabs.selected, 0);
+                    done();
+                  }, 100);
+                }, 100);
+              }, 100);
+            });
+          });
+
+        test('with autoselect, tabs are selected when moved to using arrow ' +
+          'keys', function(done) {
+            ensureDocumentHasFocus();
+            Polymer.Base.async(function() {
+              tabs.autoselect = true;
+              tabs.select(0);
+              MockInteractions.pressAndReleaseKeyOn(tabs.selectedItem, RIGHT);
+              Polymer.Base.async(function() {
+                assert.equal(tabs.selected, 1);
+
+                MockInteractions.pressAndReleaseKeyOn(tabs.selectedItem, RIGHT);
+                Polymer.Base.async(function() {
+                  assert.equal(tabs.selected, 2);
+
+                  MockInteractions.pressAndReleaseKeyOn(tabs.selectedItem, LEFT);
+                  Polymer.Base.async(function() {
+                    assert.equal(tabs.selected, 1);
+                    done();
+                  }, 100);
+                }, 100);
+              }, 100);
+            });
+          });
+
+        test('with autoselect, tabs are selected when moved to using arrow ' +
+          'keys (RTL)',function(done) {
+            ensureDocumentHasFocus();
+            Polymer.Base.async(function() {
+              tabs.setAttribute('dir', 'rtl');
+
+              tabs.autoselect = true;
+              tabs.select(0);
+              MockInteractions.pressAndReleaseKeyOn(tabs.selectedItem, LEFT);
+              Polymer.Base.async(function() {
+                assert.equal(tabs.selected, 1);
+
+                MockInteractions.pressAndReleaseKeyOn(tabs.selectedItem, LEFT);
+                Polymer.Base.async(function() {
+                  assert.equal(tabs.selected, 2);
+
+                  MockInteractions.pressAndReleaseKeyOn(tabs.selectedItem, RIGHT);
+                  Polymer.Base.async(function() {
+                    assert.equal(tabs.selected, 1);
+                    done();
+                  }, 100);
+                }, 100);
+              }, 100);
+            });
+          });
+
+        test('with autoselect-delay zero, tabs are selected with ' +
+          'microtask timing after the keyup', function(done) {
+            ensureDocumentHasFocus();
+            Polymer.Base.async(function() {
+              tabs.autoselect = true;
+              tabs.autoselectDelay = 0;
+              tabs.select(0);
+
+              MockInteractions.keyDownOn(tabs.selectedItem, RIGHT);
+              Polymer.Base.async(function() {
+                assert.equal(tabs.selected, 0);
+                assert.equal(tabs.items.indexOf(tabs.focusedItem), 1);
+
+                // No keyup between keydown events: the key is being held.
+                MockInteractions.keyDownOn(tabs.selectedItem, RIGHT);
+                Polymer.Base.async(function() {
+                  assert.equal(tabs.selected, 0);
+                  assert.equal(tabs.items.indexOf(tabs.focusedItem), 2);
+
+                  MockInteractions.keyUpOn(tabs.selectedItem, RIGHT);
+                  assert.equal(tabs.selected, 0);
+                  Polymer.Base.async(function() {
+                    assert.equal(tabs.selected, 2);
+                    assert.equal(tabs.items.indexOf(tabs.focusedItem), 2);
+
+                    MockInteractions.keyDownOn(tabs.selectedItem, LEFT);
+                    Polymer.Base.async(function() {
+                      assert.equal(tabs.selected, 2);
+                      assert.equal(tabs.items.indexOf(tabs.focusedItem), 1);
+
+                      MockInteractions.keyUpOn(tabs.selectedItem, LEFT);
+                      assert.equal(tabs.selected, 2);
+                      Polymer.Base.async(function() {
+                        assert.equal(tabs.selected, 1);
+                        done();
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+
+        test('with autoselect-delay positive, tabs are selected with ' +
+          'microtask timing after the keyup and delay', function(done) {
+            ensureDocumentHasFocus();
+            Polymer.Base.async(function() {
+              var DELAY = 100;
+
+              tabs.autoselect = true;
+              tabs.autoselectDelay = DELAY;
+              tabs.select(0);
+
+              MockInteractions.keyDownOn(tabs.selectedItem, RIGHT);
+              Polymer.Base.async(function() {
+                assert.equal(tabs.selected, 0);
+                assert.equal(tabs.items.indexOf(tabs.focusedItem), 1);
+
+                // No keyup between keydown events: the key is being held.
+                MockInteractions.keyDownOn(tabs.selectedItem, RIGHT);
+                Polymer.Base.async(function() {
+                  assert.equal(tabs.selected, 0);
+                  assert.equal(tabs.items.indexOf(tabs.focusedItem), 2);
+
+                  MockInteractions.keyUpOn(tabs.selectedItem, RIGHT);
+                  assert.equal(tabs.selected, 0);
+                  Polymer.Base.async(function() {
+                    assert.equal(tabs.selected, 2);
+                    assert.equal(tabs.items.indexOf(tabs.focusedItem), 2);
+
+                    MockInteractions.keyDownOn(tabs.selectedItem, LEFT);
+                    Polymer.Base.async(function() {
+                      assert.equal(tabs.selected, 2);
+                      assert.equal(tabs.items.indexOf(tabs.focusedItem), 1);
+
+                      MockInteractions.keyUpOn(tabs.selectedItem, LEFT);
+                      assert.equal(tabs.selected, 2);
+                      Polymer.Base.async(function() {
+                        assert.equal(tabs.selected, 1);
+                        done();
+                      }, DELAY + 100);
+                    });
+                  }, DELAY + 100);
+                });
+              });
+            });
+          });
+      });
+
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+  <head>
+
+    <title>bottom-toolbar-links</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../bottom-tab.html">
+    <link rel="import" href="../../bottom-toolbar.html">
+    <link rel="import" href="../../../iron-test-helpers/iron-test-helpers.html">
+
+  </head>
+  <body>
+
+    <test-fixture id="links">
+      <template>
+        <bottom-toolbar>
+          <bottom-tab link><a href="#one" tabindex="-1">ONE</a></bottom-tab>
+          <bottom-tab link><a href="#two" tabindex="-1">TWO</a></bottom-tab>
+          <bottom-tab link><a href="#three" tabindex="-1">THREE</a></bottom-tab>
+        </bottom-toolbar>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="not-links">
+      <template>
+        <bottom-toolbar>
+          <bottom-tab><a href="#one" tabindex="-1">ONE</a></bottom-tab>
+          <bottom-tab><a href="#two" tabindex="-1">TWO</a></bottom-tab>
+          <bottom-tab><a href="#three" tabindex="-1">THREE</a></bottom-tab>
+        </bottom-toolbar>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="not-first-child">
+      <template>
+        <bottom-toolbar>
+          <bottom-tab>
+            <div>
+              <a href="#one" tabindex="-1">ONE</a>
+            </div>
+          </bottom-tab>
+          <bottom-tab>
+            <div>
+              <a href="#two" tabindex="-1">TWO</a>
+            </div>
+          </bottom-tab>
+          <bottom-tab>
+            <div>
+              <a href="#three" tabindex="-1">THREE</a>
+            </div>
+          </bottom-tab>
+        </bottom-toolbar>
+      </template>
+    </test-fixture>
+
+    <script>
+
+      suite('links', function() {
+
+        suite('has link attribute', function() {
+
+          var tabs;
+          var tab, anchor;
+
+          setup(function () {
+            tabs = fixture('links');
+            tab = tabs.querySelectorAll('bottom-tab')[1];
+            anchor = tab.querySelector('a');
+          });
+
+          test('pressing enter on tab causes anchor click', function(done) {
+            tab.addEventListener('click', function onTabClick(event) {
+              tab.removeEventListener('click', onTabClick);
+
+              expect(event.target).to.be.equal(anchor);
+              done();
+            });
+
+            MockInteractions.pressEnter(tab);
+          });
+
+          test('pressing space on tab causes anchor click', function(done) {
+            tab.addEventListener('click', function onTabClick(event) {
+              tab.removeEventListener('click', onTabClick);
+
+              expect(event.target).to.be.equal(anchor);
+              done();
+            });
+
+            MockInteractions.pressSpace(tab);
+          });
+
+        });
+
+        suite('does not have link attribute', function() {
+
+          var tabs;
+          var tab, anchor;
+
+          setup(function () {
+            tabs = fixture('not-links');
+            tab = tabs.querySelectorAll('bottom-tab')[1];
+            anchor = tab.querySelector('a');
+          });
+
+          test('pressing enter on tab does not cause anchor click', function(done) {
+            tab.addEventListener('click', function onTabClick(event) {
+              tab.removeEventListener('click', onTabClick);
+
+              expect(event.target).to.not.equal(anchor);
+              expect(event.target).to.be.equal(tab);
+              done();
+            });
+
+            MockInteractions.pressEnter(tab);
+          });
+
+        });
+
+        suite('not first child', function() {
+
+          var tabs;
+          var tab, anchor;
+
+          setup(function () {
+            tabs = fixture('links');
+            tab = tabs.querySelectorAll('bottom-tab')[1];
+            anchor = tab.querySelector('a');
+          });
+
+          test('pressing enter on tab causes anchor click', function(done) {
+            tab.addEventListener('click', function onTabClick(event) {
+              tab.removeEventListener('click', onTabClick);
+
+              expect(event.target).to.be.equal(anchor);
+              done();
+            });
+
+            MockInteractions.pressEnter(tab);
+          });
+
+        });
+
+      });
+
+    </script>
+
+  </body>
+</html>
