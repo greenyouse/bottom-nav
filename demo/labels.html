@@ -12,7 +12,6 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../../app-layout/demo/sample-content.html">
 
-    <link rel="import" href="../../app-layout/app-header-layout/app-header-layout.html">
     <link rel="import" href="../../paper-styles/paper-styles.html">
 
     <link rel="import" href="../bottom-nav.html">
@@ -27,18 +26,14 @@
     </style>
   </head>
   <body>
-    <app-header-layout>
-
-      <bottom-nav>
-        <bottom-toolbar selected="0">
-          <bottom-tab show-label label="home" icon="icons:home"></bottom-tab>
-          <bottom-tab show-label label="lists" icon="icons:menu"></bottom-tab>
-          <bottom-tab show-label label="closers" icon="icons:close"></bottom-tab>
-          <bottom-tab show-label label="next" icon="icons:chevron-right"></bottom-tab>
-        </bottom-toolbar>
-      </bottom-nav>
-
-    </app-header-layout>
+    <bottom-nav>
+      <bottom-toolbar selected="0">
+        <bottom-tab show-label label="home" icon="icons:home"></bottom-tab>
+        <bottom-tab show-label label="lists" icon="icons:menu"></bottom-tab>
+        <bottom-tab show-label label="closers" icon="icons:close"></bottom-tab>
+        <bottom-tab show-label label="next" icon="icons:chevron-right"></bottom-tab>
+      </bottom-toolbar>
+    </bottom-nav>
 
     <sample-content size="10"></sample-content>
 
