@@ -1,43 +1,60 @@
-# \<bottom-nav\>
+# \<bottom-nav\> [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/greenyouse/bottom-nav)
 
-Bottom navigation for mobile that follows that Material Design specification.
+Bottom navigation for mobile that follows the [Material Design specification](https://material.io/guidelines/components/bottom-navigation.html).
 
-## Install the Polymer-CLI
-
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
-
-## Viewing Your Application
-
+<!-- 
 ```
-$ polymer serve
+<custom-element-demo height="610" width="425">
+  <template>
+    <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="../app-layout/demo/sample-content.html">
+    <link rel="import" href="../app-layout/app-header-layout/app-header-layout.html">
+    <link rel="import" href="../paper-styles/paper-styles.html">
+    <link rel="import" href="bottom-nav.html">
+    <link rel="import" href="bottom-toolbar.html">
+    <link rel="import" href="bottom-tab.html">
+    <style is="custom-style">
+     bottom-nav {
+       background-color: var(--primary-color);
+       color: #fff;
+     }
+    </style>
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
+```
+ -->
+
+ ```html
+    <app-header-layout>
+      <bottom-nav reveals>
+        <bottom-toolbar selected="0">
+          <bottom-tab label="home" icon="icons:home"></bottom-tab>
+          <bottom-tab show-label label="lists" icon="icons:menu"></bottom-tab>
+          <bottom-tab label="closers" icon="icons:close"></bottom-tab>
+          <bottom-tab label="next" icon="icons:chevron-right"></bottom-tab>
+        </bottom-toolbar>
+      </bottom-nav>
+    </app-header-layout>
+    <sample-content size="10"></sample-content>
+ ```
+
+## Demo
+
+[Check it out!](http://greenyouse.github.io/)
+
+## Installation
+
+```sh
+$ bower install greenyouse/bottom-nav --save
 ```
 
-## Building Your Application
+## Import
 
-```
-$ polymer build
-```
-
-This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
-containing a bundled (Vulcanized) and unbundled builds, both run through HTML,
-CSS, and JS optimizers.
-
-You can serve the built versions by giving `polymer serve` a folder to serve
-from:
-
-```
-$ polymer serve build/bundled
+```html
+<link rel="import" href="/bower_components/bottom-nav/bottom-nav.html">
 ```
 
-## Running Tests
+## Credits
 
-```
-$ polymer test
-```
-
-## TODOs
-- improve docs
-- add tests
-- allow custom CSS to take effect for each bottom-tab (activate after tap)
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+This is a fork of [paper-tabs](https://www.webcomponents.org/element/PolymerElements/paper-tabs) and [app-layout](https://www.webcomponents.org/element/PolymerElements/app-layout).
