@@ -4,11 +4,11 @@ Bottom navigation for mobile that follows the [Material Design specification](ht
 
 <!-- 
 ```
-<custom-element-demo height="400">
+<custom-element-demo>
   <template>
     <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="../app-layout/demo/sample-content.html">
-    <link rel="import" href="../iron-icon/iron-icon.html">
+    <link rel="import" href="../iron-icons/iron-icons.html">
     <link rel="import" href="../paper-styles/paper-styles.html">
     <link rel="import" href="bottom-nav.html">
     <link rel="import" href="bottom-toolbar.html">
