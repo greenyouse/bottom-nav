@@ -6,19 +6,27 @@
     "bottom-tab.html",
     "bottom-toolbar.html"
   ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "nav",
+    "toolbar",
+    "layout"
+  ],
   "ignore": [
+    ".*",
     "bower_components",
     "demo",
-    "test",
+    "test"
   ],
   "authors": [
-    "Ed Babcock"
+    "Ed Babcock <ed@edbabcock.com>"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/greenyouse/bottom-nav"
-  }
+  },
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "paper-tabs": "PolymerElements/paper-tabs#^1.7.0",
