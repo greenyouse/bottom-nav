@@ -177,7 +177,7 @@ Mixin | Description | Default
        var tabIndex = Polymer.dom(this).node.getAttribute('tabindex'),
            selected = Polymer.dom(this).node.getAttribute('aria-selected');
 
-       if (!selected) {
+       if (!selected && !this.noink) {
          var x = event.detail.x,
              y = event.detail.y,
              details = {x: x, y: y};
