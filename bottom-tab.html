@@ -175,12 +175,13 @@ Mixin | Description | Default
      },
 
      /**
-      * Fire a ripple event when the tab isn't selected
+      * Fire a ripple event when the tab is selected
       */
      _activateRipple: function(event) {
-       var tabIndex = Polymer.dom(this).node.getAttribute('tabindex');
+       var tabIndex = Polymer.dom(this).node.getAttribute('tabindex'),
+           selected = Polymer.dom(this).node.getAttribute('aria-selected');
 
-       if (tabIndex == -1) {
+       if (!selected) {
          var x = event.detail.x,
              y = event.detail.y,
              details = {x: x, y: y};
