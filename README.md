@@ -39,10 +39,6 @@ Bottom navigation for mobile that follows the [Material Design specification](ht
     <sample-content size="10"></sample-content>
  ```
 
-## Demo
-
-[Check it out!](http://greenyouse.github.io/)
-
 ## Installation
 
 ```sh
