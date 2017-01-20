@@ -29,7 +29,6 @@ Mixin | Description | Default
 ------|-------------|----------
 `--bottom-nav-background-front-layer` | Applies to the front layer of the background. | {}
 `--bottom-nav-background-rear-layer` | Applies to the rear layer of the background. | {}
-`--bottom-nav-shadow` | Applies to the shadow. | {}
 
      @demo demo/index.html
 -->
@@ -45,26 +44,6 @@ Mixin | Description | Default
         transition-property: transform;
         z-index: 1;
         @apply(--layout-fixed-bottom);
-      }
-
-      :host::after {
-        position: absolute;
-        right: 0px;
-        bottom: -5px;
-        left: 0px;
-        width: 100%;
-        height: 5px;
-        content: "";
-        transition: opacity 0.4s;
-        pointer-events: none;
-        opacity: 0;
-        box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.4);
-        will-change: opacity;
-        @apply(--bottom-nav-shadow);
-      }
-
-      :host([shadow])::after {
-        opacity: 1;
       }
 
       ::content [main-title],
@@ -184,18 +163,8 @@ Mixin | Description | Default
          */
         reveals: {
           type: Boolean,
-          value: true
-        },
-
-        /**
-         * Displays a shadow below the header.
-         */
-        shadow: {
-          type: Boolean,
-          reflectToAttribute: true,
           value: false
         }
-
       },
 
       observers: [
@@ -372,7 +341,8 @@ Mixin | Description | Default
           this.style.transitionDuration = '250ms';
         }
 
-        if (this.reveals && !this.disabled && absDScrollTop < 100) {
+        // NOTE: quick hack adding !this.fixed to avoid scroll when fixed
+        if (this.reveals && !this.fixed && !this.disabled && absDScrollTop < 100) {
           // set the initial scroll position
           if (now - this._initTimestamp > 300 || this._wasScrollingDown !== isScrollingDown) {
             this._initScrollTop = scrollTop;
