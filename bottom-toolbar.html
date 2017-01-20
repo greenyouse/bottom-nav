@@ -9,6 +9,36 @@
 <link rel="import" href="../paper-styles/color.html">
 <link rel="import" href="../paper-tabs/paper-tab.html">
 
+<!--
+`bottom-toolbar` is a tab list similar to paper-tabs for navigating
+`bottom-nav` tabs. A selected `bottom-tab` will be elevated and have
+a lighter color than other tabs.
+
+Use `selected` property to get or set the selected tab.
+
+```html
+<bottom-nav>
+  <bottom-toolbar selected="0">
+    <bottom-tab icon="icons:home"></bottom-tab>
+    <bottom-tab icon="icons:menu"></bottom-tab>
+    <bottom-tab icon="icons:close"></bottom-tab>
+    <bottom-tab icon="icons:chevron-right"></bottom-tab>
+  </bottom-toolbar>
+</bottom-nav>
+```
+
+### Styling
+
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--bottom-toolbar` | Mixin applied to the tabs | `{}`
+`--paper-tabs-content` | Mixin applied to the content container of tabs | `{}`
+`--paper-tabs-container` | Mixin applied to the layout container of tabs | `{}`
+
+     @demo demo/index.html
+   -->
 
 <dom-module id="bottom-toolbar">
   <template>
@@ -30,7 +60,7 @@
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         -webkit-tap-highlight-color: transparent;
 
-        @apply(--paper-tabs);
+        @apply(--bottom-toolbar);
       }
 
       :host-context([dir=rtl]) {
@@ -43,7 +73,7 @@
         white-space: nowrap;
         overflow: hidden;
         @apply(--layout-flex-auto);
-        @apply(--paper-tabs-container);
+        @apply(--bottom-toolbar-container);
       }
 
       #tabsContent {
@@ -51,7 +81,7 @@
         /* -moz-flex-basis: auto;
            -ms-flex-basis: auto;
            flex-basis: auto; */
-        @apply(--paper-tabs-content);
+        @apply(--bottom-toolbar-content);
       }
 
       #tabsContent.scrollable {
