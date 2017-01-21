@@ -146,7 +146,12 @@ Mixin | Description | Default
        /**
         * The name of an icon to display
         */
-       icon: String
+       icon: String,
+
+       /**
+        * A CSS class to attach to the parent element when the tab is selected
+        */
+       selectedClass: String
      },
 
      hostAttributes: {
@@ -172,18 +177,32 @@ Mixin | Description | Default
      },
 
      /**
+      * Returns true when the current tab is selected
+      */
+     _isSelected: function() {
+       return Polymer.dom(this).node.hasAttribute('aria-selected');
+     },
+
+     /**
+      * Fire an event to update the CSS class of the parent element.
+      */
+     _updateClass: function() {
+       details = {className: this.selectedClass};
+       this.fire('bottom-tab-update-class', details);
+     },
+
+     /**
       * Fire a ripple event when the tab is selected
+      * @param {Event} event
       */
      _activateRipple: function(event) {
-       var tabIndex = Polymer.dom(this).node.getAttribute('tabindex'),
-           selected = Polymer.dom(this).node.getAttribute('aria-selected');
-
-       if (!selected && !this.noink) {
+       if (!this._isSelected() && !this.noink) {
          var x = event.detail.x,
              y = event.detail.y,
              details = {x: x, y: y};
 
          this.fire('bottom-tab-ripple', details);
+         this._updateClass();
        }
      },
 

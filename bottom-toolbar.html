@@ -93,7 +93,7 @@ Custom property | Description | Default
 
     </style>
 
-    <div id="tabsContainer" on-track="_scroll" on-down="_down">
+    <div id="tabsContainer" on-down="_down">
       <div id="tabsContent">
         <paper-ripple id="ripple" noink></paper-ripple>
         <content select="*"></content>
@@ -148,7 +148,13 @@ Custom property | Description | Default
 
         _previousTab: {
           type: Object
-        }
+        },
+
+        /**
+         * The custom CSS class inherited from selectedClass on `bottom-tab` child
+         * elements.
+         */
+        _selectedClass: String
       },
 
       hostAttributes: {
@@ -160,7 +166,8 @@ Custom property | Description | Default
         'iron-items-changed': '_onTabSizingChanged',
         'iron-select': '_onIronSelect',
         'iron-deselect': '_onIronDeselect',
-        'bottom-tab-ripple': '_downAction'
+        'bottom-tab-ripple': '_downAction',
+        'bottom-tab-update-class': '_selectClass'
       },
 
       keyBindings: {
@@ -182,11 +189,38 @@ Custom property | Description | Default
      // NOTE: _fixedChanged only gets called during startup.
      attached: function() {
        this._fixedChanged();
+
+       // initialize the toolbar with the selected item's class
+       var newClass = this.items[this.selected].getAttribute('selected-class');
+       if (newClass) {
+         this._updateClass(newClass)
+       }
      },
 
       detached: function() {
         this._cancelPendingActivation();
       },
+
+     /**
+      * @param {Event} event
+      */
+     _selectClass: function(event) {
+       var newClass = event.detail.className,
+           oldClass = this._selectedClass;
+
+       if (newClass && newClass != oldClass)
+         this._updateClass(newClass);
+     },
+
+     /**
+      * Swaps an old CSS class on the toolbar for a new one
+      * @param {string} newClass The new CSS class to attach
+      */
+     _updateClass: function(newClass) {
+       Polymer.dom(this).classList.remove(this._selectedClass);
+       this._selectedClass = newClass;
+       Polymer.dom(this).classList.add(this._selectedClass);
+     },
 
      _downAction: function(event) {
        var x = event.detail.x,
@@ -200,6 +234,9 @@ Custom property | Description | Default
        this.$.ripple.upAction();
      },
 
+     /**
+      * @param {string=} val
+      */
      _noinkChanged: function(val) {
        this._updateAttribute('noink', val);
      },
@@ -209,6 +246,10 @@ Custom property | Description | Default
        this._updateAttribute('fixed', isFixed);
      },
 
+     /**
+      * @param {string} prop
+      * @param {string=} val
+      */
      _updateAttribute: function(prop, val) {
        var childTabs = Polymer.dom(this).querySelectorAll('bottom-tab');
        childTabs.forEach(function(element) {
@@ -216,10 +257,18 @@ Custom property | Description | Default
        }.bind(this));
      },
 
+     /**
+      * @param {HTMLElement} element
+      * @param {string} prop
+      */
       _setAttribute: function(element, prop) {
         element.setAttribute(prop, '');
       },
 
+     /**
+      * @param {HTMLElement} element
+      * @param {string} prop
+      */
       _removeAttribute: function(element, prop) {
         element.removeAttribute(prop);
       },
