@@ -65,11 +65,17 @@ Mixin | Description | Default
        @apply(--bottom-tab-content);
      }
 
+     :host(:not(.iron-selected)) {
+       transition: width .15s cubic-bezier(0.4, 0.0, 1, 1);
+       width: 2em;
+     }
+
      :host(:not(.iron-selected)) > .tab-content {
+       margin-bottom: 0;
        opacity: 0.8;
+       transition: margin-bottom .15s cubic-bezier(0.4, 0.0, 1, 1);
 
        @apply(--layout-vertical);
-       @apply(--layout-flex-auto);
        @apply(--bottom-tab-content-unselected);
      }
 
@@ -78,24 +84,23 @@ Mixin | Description | Default
      }
 
      :host(:focus) .tab-content {
-       opacity: 1;
        font-weight: 700;
+       opacity: 1;
      }
 
      .tab-content > ::content > a {
-       @apply(--layout-flex-auto);
-
        height: 100%;
+       width: 2em;
      }
 
      :host(.iron-selected:not([fixed])) {
-       @apply(--layout-flex-2);
+       width: 3.5em;
      }
 
      :host(.iron-selected) > .tab-content {
        font-size: 10pt;
        margin-bottom: 6px;
-       transition: margin-bottom .1s cubic-bezier(0.4, 0.0, 1, 1);
+       transition: margin-bottom .15s cubic-bezier(0.4, 0.0, 1, 1);
 
        @apply(--layout-vertical);
        @apply(--bottom-tab-content-selected);
