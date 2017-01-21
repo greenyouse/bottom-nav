@@ -191,9 +191,11 @@ Custom property | Description | Default
        this._fixedChanged();
 
        // initialize the toolbar with the selected item's class
-       var newClass = this.items[this.selected].getAttribute('selected-class');
-       if (newClass) {
-         this._updateClass(newClass)
+       var selected = this.items[this.selected];
+       if (selected) {
+         var newClass = selected.getAttribute('selected-class');
+         if (newClass)
+           this._updateClass(newClass)
        }
      },
 
