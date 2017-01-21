@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>bottom-nav custom-css demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../app-layout/demo/sample-content.html">
+
+    <link rel="import" href="../../paper-styles/paper-styles.html">
+
+    <link rel="import" href="../bottom-nav.html">
+    <link rel="import" href="../bottom-toolbar.html">
+    <link rel="import" href="../bottom-tab.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+     bottom-nav {
+       color: #fff;
+     }
+
+     .grey {
+       background-color: #465C64;
+     }
+
+     .green {
+       background-color: #0E8767;
+     }
+
+     .brown {
+       background-color: #8B6A65;
+     }
+
+     .darkbrown {
+       background-color: #6C4845;
+     }
+    </style>
+  </head>
+  <body>
+    <bottom-nav>
+      <bottom-toolbar selected="0">
+        <bottom-tab selected-class="grey" label="home" icon="icons:home"></bottom-tab>
+        <bottom-tab selected-class="green" label="lists" icon="icons:menu"></bottom-tab>
+        <bottom-tab selected-class="brown" label="closers" icon="icons:close"></bottom-tab>
+        <bottom-tab selected-class="darkbrown" label="next" icon="icons:chevron-right"></bottom-tab>
+      </bottom-toolbar>
+    </bottom-nav>
+
+    <sample-content size="10"></sample-content>
+
+  </body>
+</html>
