@@ -63,7 +63,7 @@
     <test-fixture id="colors">
       <template>
         <bottom-nav>
-          <bottom-toolbar>
+          <bottom-toolbar selected="0">
             <bottom-tab selected-class="purple"></bottom-tab>
             <bottom-tab selected-class="yellow"></bottom-tab>
           </bottom-toolbar>
@@ -191,6 +191,28 @@
           });
         });
       });
+
+     suite('selected-css attribute', function() {
+       var tabs, tab;
+       var RIGHT = 39;
+
+       setup(function () {
+         tabs = fixture('colors');
+       });
+
+       test('selected-css attribute in sync with bottom-toolbar', function() {
+         var toolbar = tabs.querySelector('bottom-toolbar'),
+             classes = toolbar.classList;
+
+         assert.isTrue(classes.contains('purple'));
+
+         tab = tabs.querySelectorAll('bottom-tab')[1];
+         MockInteractions.tap(tab);
+
+         assert.isTrue(classes.contains('yellow'));
+         assert.isFalse(classes.contains('purple'));
+       });
+     });
 
       suite('accessibility', function() {
         var LEFT = 37;
