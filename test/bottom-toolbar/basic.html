@@ -10,6 +10,7 @@
     <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../../web-component-tester/browser.js"></script>
 
+    <link rel="import" href="../../bottom-nav.html">
     <link rel="import" href="../../bottom-tab.html">
     <link rel="import" href="../../bottom-toolbar.html">
     <link rel="import" href="../../../iron-test-helpers/iron-test-helpers.html">
@@ -34,6 +35,31 @@
         </bottom-toolbar>
       </template>
     </test-fixture>
+
+    <test-fixture id="fixed">
+      <template>
+        <bottom-nav fixed>
+          <bottom-toolbar>
+            <bottom-tab>ITEM ONE</bottom-tab>
+            <bottom-tab>ITEM TWO</bottom-tab>
+            <bottom-tab>ITEM THREE</bottom-tab>
+          </bottom-toolbar>
+        </bottom-nav>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="bottomNav">
+      <template>
+        <bottom-nav>
+          <bottom-toolbar>
+            <bottom-tab>ITEM ONE</bottom-tab>
+            <bottom-tab>ITEM TWO</bottom-tab>
+            <bottom-tab>ITEM THREE</bottom-tab>
+          </bottom-toolbar>
+        </bottom-nav>
+      </template>
+    </test-fixture>
+
 
     <script>
 
@@ -133,6 +159,25 @@
           tabs.noink = false;
           tabs.items.forEach(function(tab) {
             assert.isFalse(tab.hasAttribute('noink'));
+          });
+        });
+      });
+
+      suite('fixed attribute', function() {
+        var fixedTabs, tabs;
+
+        setup(function () {
+          fixedTabs = fixture('fixed');
+          tabs = fixture('bottomNav');
+        });
+
+        test('fixed attribute propagates to all descendant tabs', function() {
+          Array.prototype.forEach.call(fixedTabs.querySelectorAll('bottom-tab'), function(tab) {
+            assert.isTrue(tab.hasAttribute('fixed'));
+          });
+
+          Array.prototype.forEach.call(tabs.querySelectorAll('bottom-tab'), function(tab) {
+            assert.isFalse(tab.hasAttribute('fixed'));
           });
         });
       });
