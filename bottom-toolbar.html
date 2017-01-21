@@ -179,6 +179,11 @@ Custom property | Description | Default
         this.setScrollDirection('y', this.$.tabsContainer);
       },
 
+     // NOTE: _fixedChanged only gets called during startup.
+     attached: function() {
+       this._fixedChanged();
+     },
+
       detached: function() {
         this._cancelPendingActivation();
       },
@@ -195,17 +200,28 @@ Custom property | Description | Default
        this.$.ripple.upAction();
      },
 
-      _noinkChanged: function(noink) {
-        var childTabs = Polymer.dom(this).querySelectorAll('bottom-tab');
-        childTabs.forEach(noink ? this._setNoinkAttribute : this._removeNoinkAttribute);
+     _noinkChanged: function(val) {
+       this._updateAttribute('noink', val);
+     },
+
+     _fixedChanged: function() {
+       var isFixed = Polymer.dom(this).parentNode.fixed;
+       this._updateAttribute('fixed', isFixed);
+     },
+
+     _updateAttribute: function(prop, val) {
+       var childTabs = Polymer.dom(this).querySelectorAll('bottom-tab');
+       childTabs.forEach(function(element) {
+         val ? this._setAttribute(element, prop) : this._removeAttribute(element, prop);
+       }.bind(this));
+     },
+
+      _setAttribute: function(element, prop) {
+        element.setAttribute(prop, '');
       },
 
-      _setNoinkAttribute: function(element) {
-        element.setAttribute('noink', '');
-      },
-
-      _removeNoinkAttribute: function(element) {
-        element.removeAttribute('noink');
+      _removeAttribute: function(element, prop) {
+        element.removeAttribute(prop);
       },
 
       // TODO(cdata): Add `track` response back in when gesture lands.
