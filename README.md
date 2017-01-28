@@ -21,6 +21,22 @@ Bottom navigation for mobile that follows the [Material Design specification](ht
        background-color: var(--primary-color);
        color: #fff;
      }
+
+     .grey {
+       background-color: #465C64;
+     }
+
+     .green {
+       background-color: #0E8767;
+     }
+
+     .brown {
+       background-color: #8B6A65;
+     }
+
+     .darkbrown {
+       background-color: #6C4845;
+     }
     </style>
     <next-code-block></next-code-block>
   </template>
@@ -31,10 +47,10 @@ Bottom navigation for mobile that follows the [Material Design specification](ht
  ```html
     <bottom-nav>
       <bottom-toolbar selected="0">
-        <bottom-tab label="Movies & TV" icon="notification:ondemand-video"></bottom-tab>
-        <bottom-tab label="Music" icon="image:music-note"></bottom-tab>
-        <bottom-tab label="Books" icon="icons:book"></bottom-tab>
-        <bottom-tab label="Newstand" icon="av:web"></bottom-tab>
+        <bottom-tab  selected-class="grey" label="Movies & TV" icon="notification:ondemand-video"></bottom-tab>
+        <bottom-tab  selected-class="green"label="Music" icon="image:music-note"></bottom-tab>
+        <bottom-tab  selected-class="brown"label="Books" icon="icons:book"></bottom-tab>
+        <bottom-tab  selected-class="darkbrown" label="Newstand" icon="av:web"></bottom-tab>
       </bottom-toolbar>
     </bottom-nav>
     <sample-content size="10"></sample-content>
