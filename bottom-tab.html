@@ -66,6 +66,7 @@ Mixin | Description | Default
      }
 
      :host(:not(.iron-selected)) {
+       padding-bottom: .5em;
        transition: width .15s cubic-bezier(0.4, 0.0, 1, 1);
        width: 2em;
      }
@@ -84,7 +85,6 @@ Mixin | Description | Default
      }
 
      :host(:focus) .tab-content {
-       font-weight: 700;
        opacity: 1;
      }
 
@@ -98,12 +98,17 @@ Mixin | Description | Default
      }
 
      :host(.iron-selected) > .tab-content {
-       font-size: 10pt;
+       font-size: 10.5pt;
+       font-weight: normal;
        margin-bottom: 6px;
        transition: margin-bottom .15s cubic-bezier(0.4, 0.0, 1, 1);
 
        @apply(--layout-vertical);
        @apply(--bottom-tab-content-selected);
+     }
+
+     :host(.iron-selected) > .tab-content > span {
+       padding-top: .3em;
      }
     </style>
 
