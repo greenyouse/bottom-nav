@@ -8,7 +8,10 @@ Bottom navigation for mobile that follows the [Material Design specification](ht
   <template>
     <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="../app-layout/demo/sample-content.html">
+    <link rel="import" href="../iron-icons/av-icons.html">
     <link rel="import" href="../iron-icons/iron-icons.html">
+    <link rel="import" href="../iron-icons/image-icons.html">
+    <link rel="import" href="../iron-icons/notification-icons.html">
     <link rel="import" href="../paper-styles/paper-styles.html">
     <link rel="import" href="bottom-nav.html">
     <link rel="import" href="bottom-toolbar.html">
@@ -28,10 +31,10 @@ Bottom navigation for mobile that follows the [Material Design specification](ht
  ```html
     <bottom-nav>
       <bottom-toolbar selected="0">
-        <bottom-tab label="home" icon="icons:home"></bottom-tab>
-        <bottom-tab show-label label="lists" icon="icons:menu"></bottom-tab>
-        <bottom-tab label="closers" icon="icons:close"></bottom-tab>
-        <bottom-tab label="next" icon="icons:chevron-right"></bottom-tab>
+        <bottom-tab label="Movies & TV" icon="notification:ondemand-video"></bottom-tab>
+        <bottom-tab label="Music" icon="image:music-note"></bottom-tab>
+        <bottom-tab label="Books" icon="icons:book"></bottom-tab>
+        <bottom-tab label="Newstand" icon="av:web"></bottom-tab>
       </bottom-toolbar>
     </bottom-nav>
     <sample-content size="10"></sample-content>
