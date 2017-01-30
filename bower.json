@@ -1,11 +1,7 @@
 {
   "name": "bottom-nav",
   "description": "Bottom navigation for mobile that follows the Material Design specification.",
-  "main": [
-    "bottom-nav.html",
-    "bottom-tab.html",
-    "bottom-toolbar.html"
-  ],
+  "main": "bottom-nav.html",
   "keywords": [
     "web-components",
     "polymer",
