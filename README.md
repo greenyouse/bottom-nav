@@ -45,7 +45,7 @@ Bottom navigation for mobile that follows the [Material Design specification](ht
  -->
 
  ```html
-    <bottom-nav>
+    <bottom-nav shadow>
       <bottom-toolbar selected="0">
         <bottom-tab  selected-class="grey" label="Movies & TV" icon="notification:ondemand-video"></bottom-tab>
         <bottom-tab  selected-class="green"label="Music" icon="image:music-note"></bottom-tab>
