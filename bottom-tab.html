@@ -59,29 +59,31 @@ Mixin | Description | Default
        height: 100%;
        transform: translateZ(0);
        -webkit-transform: translateZ(0);
-       transition: opacity 0.1s cubic-bezier(0.4, 0.0, 1, 1);
-       @apply(--layout-horizontal);
+       padding-bottom: 10px;
+       @apply(--layout-vertical);
        @apply(--layout-center-center);
        @apply(--bottom-tab-content);
      }
 
      :host(:not(.iron-selected)) {
-       padding-bottom: .5em;
        transition: width .15s cubic-bezier(0.4, 0.0, 1, 1);
        width: 2em;
      }
 
-     :host(:not(.iron-selected)) > .tab-content {
-       margin-bottom: 0;
+     :host(:not(.iron-selected)) .tab-content {
        opacity: 0.8;
-       transition: margin-bottom .15s cubic-bezier(0.4, 0.0, 1, 1);
+       padding-top: 8px;
 
-       @apply(--layout-vertical);
        @apply(--bottom-tab-content-unselected);
      }
 
      :host(:not(.iron-selected)) :not([show]).label {
        display: none;
+     }
+
+     :host(:not(.iron-selected)) .label {
+       font-size: 12px;
+       transition: font-size .1s ease-in;
      }
 
      :host(:focus) .tab-content {
@@ -93,7 +95,7 @@ Mixin | Description | Default
        width: 2em;
      }
 
-     :host(.iron-selected:not([fixed])) {
+     :host(.iron-selected:not([show-label])) {
        width: 3.5em;
      }
 
@@ -102,17 +104,12 @@ Mixin | Description | Default
      }
 
      :host(.iron-selected) > .tab-content {
-       font-size: 10.5pt;
+       font-size: 14px;
        font-weight: normal;
-       margin-bottom: 6px;
-       transition: margin-bottom .15s cubic-bezier(0.4, 0.0, 1, 1);
+       padding-top: 6px;
+       transition: padding-top .1s ease-in;
 
-       @apply(--layout-vertical);
        @apply(--bottom-tab-content-selected);
-     }
-
-     :host(.iron-selected) > .tab-content > span {
-       padding-top: .3em;
      }
     </style>
 
