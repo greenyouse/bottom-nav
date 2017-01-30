@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>bottom-nav reveal shadow demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-icons/av-icons.html">
+    <link rel="import" href="../../iron-icons/image-icons.html">
+    <link rel="import" href="../../iron-icons/notification-icons.html">
+    <link rel="import" href="../../app-layout/demo/sample-content.html">
+
+    <link rel="import" href="../../paper-styles/paper-styles.html">
+
+    <link rel="import" href="../bottom-nav.html">
+    <link rel="import" href="../bottom-toolbar.html">
+    <link rel="import" href="../bottom-tab.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+     bottom-nav {
+       background-color: var(--primary-color);
+       color: #fff;
+     }
+    </style>
+  </head>
+  <body>
+    <bottom-nav shadow>
+      <bottom-toolbar selected="0">
+        <bottom-tab label="Movies & TV" icon="notification:ondemand-video"></bottom-tab>
+        <bottom-tab label="Music" icon="image:music-note"></bottom-tab>
+        <bottom-tab label="Books" icon="icons:book"></bottom-tab>
+        <bottom-tab label="Newstand" icon="av:web"></bottom-tab>
+      </bottom-toolbar>
+    </bottom-nav>
+
+    <sample-content size="10"></sample-content>
+
+  </body>
+</html>
