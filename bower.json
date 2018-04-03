@@ -25,16 +25,20 @@
     "url": "git://github.com/greenyouse/bottom-nav"
   },
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0",
-    "paper-tabs": "PolymerElements/paper-tabs#^1.7.0",
-    "app-layout": "^0.10.6",
-    "iron-resizable-behavior": "^1.0.5"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
+    "paper-ripple": "PolymerElements/paper-ripple#^2.1.0",
+    "app-layout": "^2.0.0",
+    "iron-resizable-behavior": "^2.0.0"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^3.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
     "web-component-tester": "^4.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
-    "iron-test-helpers": "^1.4.0"
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "iron-test-helpers": "^2.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
   }
 }
