@@ -1,41 +1,21 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/lib/utils/render-status.html">
 <link rel="import" href="../iron-behaviors/iron-button-state.html">
 <link rel="import" href="../iron-behaviors/iron-control-state.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
 <!--
-`bottom-tab` is a tab element for navigating the pages of a bottom-nav. An iron-icon
-can be used to assign a logo to the tab. An optional label can also be used to
-clarify the tab's meaning.
-
-     <bottom-nav>
-       <bottom-toolbar selected="0">
-         <bottom-tab label="Home" icon="icons:home"></bottom-tab>
-         <bottom-tab label="Favorites" icon="icons:favorite"></bottom-tab>
-         <bottom-tab label="Recent" icon="icons:clock"></bottom-tab>
-       </bottom-toolbar>
-     </bottom-nav>
-
-## Styling
-
-Mixin | Description | Default
-------|-------------|----------
-`--bottom-tab` | Mixin applied to the tab | `{}`
-`--bottom-tab-content` | Mixin applied to the tab content | `{}`
-`--bottom-tab-content-unselected` | Mixin applied to the tab content when the tab is not selected | `{}`
-
-     @demo demo/index.html
  -->
 
 <dom-module id="bottom-tab">
   <template>
     <style>
      :host {
-       @apply(--layout-inline);
-       @apply(--layout-center);
-       @apply(--layout-center-justified);
-       @apply(--layout-flex-auto);
+       @apply --layout-inline;
+       @apply --layout-center;
+       @apply --layout-center-justified;
+       @apply --layout-flex-auto;
 
        position: relative;
        padding: 0 12px;
@@ -43,8 +23,8 @@ Mixin | Description | Default
        cursor: pointer;
        vertical-align: middle;
 
-       @apply(--paper-font-common-base);
-       @apply(--bottom-tab);
+       @apply --paper-font-common-base;
+       @apply --bottom-tab;
      }
 
      :host(:focus) {
@@ -60,9 +40,9 @@ Mixin | Description | Default
        transform: translateZ(0);
        -webkit-transform: translateZ(0);
        padding-bottom: 10px;
-       @apply(--layout-vertical);
-       @apply(--layout-center-center);
-       @apply(--bottom-tab-content);
+       @apply --layout-vertical;
+       @apply --layout-center-center;
+       @apply --bottom-tab-content;
      }
 
      :host(:not(.iron-selected)) {
@@ -74,7 +54,7 @@ Mixin | Description | Default
        opacity: 0.8;
        padding-top: 8px;
 
-       @apply(--bottom-tab-content-unselected);
+       @apply --bottom-tab-content-unselected;
      }
 
      :host(:not(.iron-selected)) :not([show]).label {
@@ -90,7 +70,7 @@ Mixin | Description | Default
        opacity: 1;
      }
 
-     .tab-content > ::content > a {
+     .tab-content > ::slotted(a) {
        height: 100%;
        width: 2em;
      }
@@ -109,104 +89,126 @@ Mixin | Description | Default
        padding-top: 6px;
        transition: padding-top .1s ease-in;
 
-       @apply(--bottom-tab-content-selected);
+       @apply --bottom-tab-content-selected;
      }
     </style>
 
     <div class="tab-content">
       <iron-icon icon="[[icon]]"></iron-icon>
       <span show$="[[showLabel]]" class="label">[[label]]</span>
-      <content></content>
+      <slot></slot>
     </div>
   </template>
 
   <script>
-   Polymer({
-     is: 'bottom-tab',
+   /* `bottom-tab` is a tab element for navigating the pages of a bottom-nav. An iron-icon
+    * can be used to assign a logo to the tab. An optional label can also be used to
+    * clarify the tab's meaning.
+    *
+    *      <bottom-nav>
+    *        <bottom-toolbar selected="0">
+    *          <bottom-tab label="Home" icon="icons:home"></bottom-tab>
+    *          <bottom-tab label="Favorites" icon="icons:favorite"></bottom-tab>
+    *          <bottom-tab label="Recent" icon="icons:clock"></bottom-tab>
+    *        </bottom-toolbar>
+    *      </bottom-nav>
+    *
+    * ## Styling
+    *
+    * Mixin | Description | Default
+    * ------|-------------|----------
+    * `--bottom-tab` | Mixin applied to the tab | `{}`
+    * `--bottom-tab-content` | Mixin applied to the tab content | `{}`
+    * `--bottom-tab-content-unselected` | Mixin applied to the tab content when the tab is not selected | `{}`
+    *
+    *      @demo demo/index.html */
+   class BottomTab extends Polymer.mixinBehaviors([
+     Polymer.IronControlState,
+     Polymer.IronButtonState
+   ], Polymer.Element) {
+     static get is() { return 'bottom-tab'; }
 
-     behaviors: [
-       Polymer.IronControlState,
-       Polymer.IronButtonState
-     ],
+     static get properties() {
+       return {
 
-     properties: {
+         /**
+          * If true, the tab will forward keyboard clicks (enter/space) to
+          * the first anchor element found in its descendants
+          */
+         link: {
+           type: Boolean,
+           value: false,
+           reflectToAttribute: true
+         },
 
-       /**
-        * If true, the tab will forward keyboard clicks (enter/space) to
-        * the first anchor element found in its descendants
-        */
-       link: {
-         type: Boolean,
-         value: false,
-         reflectToAttribute: true
-       },
+         /**
+          * A label for the tab that is hidden when not active.
+          */
+         label: String,
 
-       /**
-        * A label for the tab that is hidden when not active.
-        */
-       label: String,
+         /**
+          * Whether the label should be displayed or hidden, default hidden
+          */
+         showLabel: {
+           type: Boolean,
+           value: false
+         },
 
-       /**
-        * Whether the label should be displayed or hidden, default hidden
-        */
-       showLabel: {
-         type: Boolean,
-         value: false
-       },
+         /**
+          * The name of an icon to display
+          */
+         icon: String,
 
-       /**
-        * The name of an icon to display
-        */
-       icon: String,
+         /**
+          * A CSS class to attach to the parent element when the tab is selected
+          */
+         selectedClass: String
+       }
+     }
 
-       /**
-        * A CSS class to attach to the parent element when the tab is selected
-        */
-       selectedClass: String
-     },
+     constructor() {
+       super();
+       this._ensureAttributes('role', 'tab');
+     }
 
-     hostAttributes: {
-       role: 'tab'
-     },
-
-     listeners: {
-       down: '_updateNoink',
-       tap: '_onTap'
-     },
-
-     attached: function() {
+     connectedCallback() {
+       super.connectedCallback();
        this._updateNoink();
-     },
+       Polymer.RenderStatus.beforeNextRender(this, function() {
+         this.addEventListener('down', this._updateNoink);
+         this.addEventListener('tap', this._onTap);
+       });
+     }
 
-     get _parentNoink () {
+     get _parentNoink() {
        var parent = Polymer.dom(this).parentNode;
        return !!parent && !!parent.noink;
-     },
+     }
 
-     _updateNoink: function() {
+     _updateNoink() {
        this.noink = !!this.noink || !!this._parentNoink;
-     },
+     }
 
      /**
       * Returns true when the current tab is selected
       */
-     _isSelected: function() {
+     _isSelected() {
        return Polymer.dom(this).node.hasAttribute('aria-selected');
-     },
+     }
 
      /**
       * Fire an event to update the CSS class of the parent element.
       */
-     _updateClass: function() {
+     _updateClass() {
        details = {className: this.selectedClass};
        this.fire('bottom-tab-update-class', details);
-     },
+     }
 
      /**
       * Fire a ripple event when the tab is selected
       * @param {Event} event
       */
-     _activateRipple: function(event) {
+     _activateRipple(event) {
        if (!this._isSelected() && !this.noink) {
          var x = event.detail.x,
              y = event.detail.y,
@@ -215,9 +217,9 @@ Mixin | Description | Default
          this.fire('bottom-tab-ripple', details);
          this._updateClass();
        }
-     },
+     }
 
-     _onTap: function(event) {
+     _onTap(event) {
        if (this.link) {
          var anchor = this.queryEffectiveChildren('a');
 
@@ -236,7 +238,8 @@ Mixin | Description | Default
 
        this._activateRipple(event);
      }
+   }
 
-   });
+   customElements.define(BottomTab.is, BottomTab);
   </script>
 </dom-module>

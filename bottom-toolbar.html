@@ -1,4 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/lib/utils/async.html">
+<link rel="import" href="../polymer/lib/utils/render-status.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../iron-menu-behavior/iron-menubar-behavior.html">
 <link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
@@ -6,43 +8,12 @@
 <link rel="import" href="../paper-styles/color.html">
 <link rel="import" href="../paper-tabs/paper-tab.html">
 
-<!--
-`bottom-toolbar` is a tab list similar to paper-tabs for navigating
-`bottom-nav` tabs. A selected `bottom-tab` will be elevated and have
-a lighter color than other tabs.
-
-Use `selected` property to get or set the selected tab.
-
-```html
-<bottom-nav>
-  <bottom-toolbar selected="0">
-    <bottom-tab icon="icons:home"></bottom-tab>
-    <bottom-tab icon="icons:menu"></bottom-tab>
-    <bottom-tab icon="icons:close"></bottom-tab>
-    <bottom-tab icon="icons:chevron-right"></bottom-tab>
-  </bottom-toolbar>
-</bottom-nav>
-```
-
-### Styling
-
-The following custom properties and mixins are available for styling:
-
-Custom property | Description | Default
-----------------|-------------|----------
-`--bottom-toolbar` | Mixin applied to the tabs | `{}`
-`--bottom-toolbar-content` | Mixin applied to the content container of tabs | `{}`
-`--bottom-toolbar-container` | Mixin applied to the layout container of tabs | `{}`
-
-     @demo demo/index.html
-   -->
-
 <dom-module id="bottom-toolbar">
   <template>
-    <style>
+      <style>
       :host {
-        @apply(--layout);
-        @apply(--layout-center);
+        @apply --layout;
+        @apply --layout-center;
 
         height: 64px;
         font-size: 14px;
@@ -57,11 +28,11 @@ Custom property | Description | Default
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         -webkit-tap-highlight-color: transparent;
 
-        @apply(--bottom-toolbar);
+        @apply --bottom-toolbar;
       }
 
       :host-context([dir=rtl]) {
-        @apply(--layout-horizontal-reverse);
+        @apply --layout-horizontal-reverse;
       }
 
       #tabsContainer {
@@ -69,17 +40,17 @@ Custom property | Description | Default
         height: 100%;
         white-space: nowrap;
         overflow: hidden;
-        @apply(--layout-flex-auto);
-        @apply(--bottom-toolbar-container);
+        @apply --layout-flex-auto;
+        @apply --bottom-toolbar-container;
       }
 
       #tabsContent {
         height: 100%;
-        @apply(--bottom-toolbar-content);
+        @apply --bottom-toolbar-content;
       }
 
      #tabsContent {
-        @apply(--layout-horizontal);
+        @apply --layout-horizontal;
       }
 
       .hidden {
@@ -90,104 +61,134 @@ Custom property | Description | Default
         opacity: 0;
         cursor: default;
       }
-
-    </style>
+      </style>
 
     <div id="tabsContainer" on-down="_down">
       <div id="tabsContent">
         <paper-ripple id="ripple" noink></paper-ripple>
-        <content select="*"></content>
+        <slot></slot>
       </div>
     </div>
 
   </template>
 
   <script>
-   Polymer({
-     is: 'bottom-toolbar',
-      behaviors: [
-        Polymer.IronResizableBehavior,
-        Polymer.IronMenubarBehavior
-      ],
+   /* `bottom-toolbar` is a tab list similar to paper-tabs for navigating
+    * `bottom-nav` tabs. A selected `bottom-tab` will be elevated and have
+    * a lighter color than other tabs.
+    *
+    * Use `selected` property to get or set the selected tab.
+    *
+    * ```html
+    * <bottom-nav>
+    *   <bottom-toolbar selected="0">
+    *     <bottom-tab icon="icons:home"></bottom-tab>
+    *     <bottom-tab icon="icons:menu"></bottom-tab>
+    *     <bottom-tab icon="icons:close"></bottom-tab>
+    *     <bottom-tab icon="icons:chevron-right"></bottom-tab>
+    *   </bottom-toolbar>
+    * </bottom-nav>
+    * ```
+    *
+    * ### Styling
+    *
+    * The following custom properties and mixins are available for styling:
+    *
+    * Custom property | Description | Default
+    * ----------------|-------------|----------
+    * `--bottom-toolbar` | Mixin applied to the tabs | `{}`
+    * `--bottom-toolbar-content` | Mixin applied to the content container of tabs | `{}`
+    * `--bottom-toolbar-container` | Mixin applied to the layout container of tabs | `{}`
+    *
+    *      @demo demo/index.html */
+   class BottomToolbar extends Polymer.mixinBehaviors([
+     Polymer.IronResizableBehavior,
+     Polymer.IronMenubarBehavior
+   ], Polymer.Element) {
+     static get is() { return 'bottom-toolbar'; }
 
-      properties: {
-        /**
-         * If true, ink ripple effect is disabled. When this property is changed,
-         * all descendant `<bottom-toolbar>` elements have their `noink` property
-         * changed to the new value as well.
-         */
-        noink: {
-          type: Boolean,
-          value: false,
-          observer: '_noinkChanged'
-        },
+     static get properties() {
+       return {
+         /**
+          * If true, ink ripple effect is disabled. When this property is changed,
+          * all descendant `<bottom-toolbar>` elements have their `noink` property
+          * changed to the new value as well.
+          */
+         noink: {
+           type: Boolean,
+           value: false,
+           observer: '_noinkChanged'
+         },
 
-        selectable: {
-          type: String,
-          value: 'bottom-tab'
-        },
+         selectable: {
+           type: String,
+           value: 'bottom-tab'
+         },
 
-        /**
-         * If true, tabs are automatically selected when focused using the
-         * keyboard.
-         */
-        autoselect: {
-          type: Boolean,
-          value: false
-        },
+         /**
+          * If true, tabs are automatically selected when focused using the
+          * keyboard.
+          */
+         autoselect: {
+           type: Boolean,
+           value: false
+         },
 
-        /**
-         * The delay (in milliseconds) between when the user stops interacting
-         * with the tabs through the keyboard and when the focused item is
-         * automatically selected (if `autoselect` is true).
-         */
-        autoselectDelay: {
-          type: Number,
-          value: 0
-        },
+         /**
+          * The delay (in milliseconds) between when the user stops interacting
+          * with the tabs through the keyboard and when the focused item is
+          * automatically selected (if `autoselect` is true).
+          */
+         autoselectDelay: {
+           type: Number,
+           value: 0
+         },
 
-        _previousTab: {
-          type: Object
-        },
+         _previousTab: {
+           type: Object
+         },
 
-        /**
-         * The custom CSS class inherited from selectedClass on `bottom-tab` child
-         * elements.
-         */
-        _selectedClass: String
-      },
+         /**
+          * The custom CSS class inherited from selectedClass on `bottom-tab` child
+          * elements.
+          */
+         _selectedClass: String
+       }
+     }
 
-      hostAttributes: {
-        role: 'tablist'
-      },
+     get keyBindings() {
+       return {
+         'left:keyup right:keyup': '_onArrowKeyup'
+       }
+     }
 
-      listeners: {
-        'iron-resize': '_onTabSizingChanged',
-        'iron-items-changed': '_onTabSizingChanged',
-        'iron-select': '_onIronSelect',
-        'iron-deselect': '_onIronDeselect',
-        'bottom-tab-ripple': '_downAction',
-        'bottom-tab-update-class': '_selectClass'
-      },
+     constructor() {
+       super();
+       this._ensureAttributes('role', 'tablist');
+       this._holdJob = null;
+       this._pendingActivationItem = undefined;
+       this._pendingActivationTimeout = undefined;
+       this._bindDelayedActivationHandler = this._delayedActivationHandler.bind(this);
+       this.addEventListener('blur', this._onBlurCapture.bind(this), true);
+     }
 
-      keyBindings: {
-        'left:keyup right:keyup': '_onArrowKeyup'
-      },
+     ready() {
+       super.ready();
+       this.setScrollDirection('y', this.$.tabsContainer);
+     }
 
-      created: function() {
-        this._holdJob = null;
-        this._pendingActivationItem = undefined;
-        this._pendingActivationTimeout = undefined;
-        this._bindDelayedActivationHandler = this._delayedActivationHandler.bind(this);
-        this.addEventListener('blur', this._onBlurCapture.bind(this), true);
-      },
+     connectedCallback() {
+       super.connectedCallback();
+       Polymer.RenderStatus.beforeNextRender(this, function() {
+         this.addEventListener('iron-resize', this._onTabSizingChanged);
+         this.addEventListener('iron-items-changed', this._onTabSizingChanged);
+         this.addEventListener('iron-select', this._onIronSelect);
+         this.addEventListener('iron-deselect', this._onIronDeselect);
+         this.addEventListener('bottom-tab-ripple', this._downAction);
+         this.addEventListener('bottom-tab-update-class', this._selectClass);
+       })
 
-      ready: function() {
-        this.setScrollDirection('y', this.$.tabsContainer);
-      },
-
-     // NOTE: _fixedChanged only gets called during startup.
-     attached: function() {
+       // NOTE: _fixedChanged only gets called during startup.
        this._fixedChanged();
 
        // initialize the toolbar with the selected item's class
@@ -197,170 +198,172 @@ Custom property | Description | Default
          if (newClass)
            this._updateClass(newClass)
        }
-     },
+     }
 
-      detached: function() {
-        this._cancelPendingActivation();
-      },
+     disconnectedCallback() {
+       super.disconnectedCallback();
+       this._cancelPendingActivation();
+     }
 
      /**
       * @param {Event} event
       */
-     _selectClass: function(event) {
+     _selectClass(event) {
        var newClass = event.detail.className,
            oldClass = this._selectedClass;
 
        if (newClass && newClass != oldClass)
          this._updateClass(newClass);
-     },
+     }
 
      /**
       * Swaps an old CSS class on the toolbar for a new one
       * @param {string} newClass The new CSS class to attach
       */
-     _updateClass: function(newClass) {
+     _updateClass(newClass) {
        Polymer.dom(this).classList.remove(this._selectedClass);
        this._selectedClass = newClass;
        Polymer.dom(this).classList.add(this._selectedClass);
-     },
+     }
 
-     _downAction: function(event) {
+     _downAction(event) {
        var x = event.detail.x,
            y = event.detail.y;
        this.$.ripple.downAction({detail: {x: x, y: y}});
 
        this._upAction();
-     },
+     }
 
-     _upAction: function() {
+     _upAction() {
        this.$.ripple.upAction();
-     },
+     }
 
      /**
       * @param {string=} val
       */
-     _noinkChanged: function(val) {
+     _noinkChanged(val) {
        this._updateAttribute('noink', val);
-     },
+     }
 
-     _fixedChanged: function() {
+     _fixedChanged() {
        var isFixed = Polymer.dom(this).parentNode.fixed;
        this._updateAttribute('fixed', isFixed);
-     },
+     }
 
      /**
       * @param {string} prop
       * @param {string=} val
       */
-     _updateAttribute: function(prop, val) {
+     _updateAttribute(prop, val) {
        var childTabs = Polymer.dom(this).querySelectorAll('bottom-tab');
        childTabs.forEach(function(element) {
          val ? this._setAttribute(element, prop) : this._removeAttribute(element, prop);
        }.bind(this));
-     },
+     }
 
      /**
       * @param {HTMLElement} element
       * @param {string} prop
       */
-      _setAttribute: function(element, prop) {
-        element.setAttribute(prop, '');
-      },
+     _setAttribute(element, prop) {
+       element.setAttribute(prop, '');
+     }
 
      /**
       * @param {HTMLElement} element
       * @param {string} prop
       */
-      _removeAttribute: function(element, prop) {
-        element.removeAttribute(prop);
-      },
+     _removeAttribute(element, prop) {
+       element.removeAttribute(prop);
+     }
 
-      // TODO(cdata): Add `track` response back in when gesture lands.
+     // TODO(cdata): Add `track` response back in when gesture lands.
 
-      _onTabSizingChanged: function() {
-        this.debounce('_onTabSizingChanged', function() {
-        }, 10);
-      },
+     _onTabSizingChanged() {
+       this.debounce('_onTabSizingChanged', function() {
+       }, 10);
+     }
 
-      _onIronSelect: function(event) {
-        this._previousTab = event.detail.item;
-        this.cancelDebouncer('tab-changed');
-      },
+     _onIronSelect(event) {
+       this._previousTab = event.detail.item;
+       this.cancelDebouncer('tab-changed');
+     }
 
-      _onIronDeselect: function(event) {
-        this.debounce('tab-changed', function() {
-          this._tabChanged(null, this._previousTab);
-          this._previousTab = null;
-          // See polymer/polymer#1305
-        }, 1);
-      },
+     _onIronDeselect(event) {
+       this.debounce('tab-changed', function() {
+         this._tabChanged(null, this._previousTab);
+         this._previousTab = null;
+         // See polymer/polymer#1305
+       }, 1);
+     }
 
-      _activateHandler: function() {
-        // Cancel item activations scheduled by keyboard events when any other
-        // action causes an item to be activated (e.g. clicks).
-        this._cancelPendingActivation();
-        Polymer.IronMenuBehaviorImpl._activateHandler.apply(this, arguments);
-      },
+     _activateHandler() {
+       // Cancel item activations scheduled by keyboard events when any other
+       // action causes an item to be activated (e.g. clicks).
+       this._cancelPendingActivation();
+       Polymer.IronMenuBehaviorImpl._activateHandler.apply(this, arguments);
+     }
 
-      /**
-       * Activates an item after a delay (in milliseconds).
-       */
-      _scheduleActivation: function(item, delay) {
-        this._pendingActivationItem = item;
-        this._pendingActivationTimeout = this.async(
-          this._bindDelayedActivationHandler, delay);
-      },
+     /**
+      * Activates an item after a delay (in milliseconds).
+      */
+     _scheduleActivation(item, delay) {
+       this._pendingActivationItem = item;
+       this._pendingActivationTimeout = this.async(
+         this._bindDelayedActivationHandler, delay);
+     }
 
-      /**
-       * Activates the last item given to `_scheduleActivation`.
-       */
-      _delayedActivationHandler: function() {
-        var item = this._pendingActivationItem;
-        this._pendingActivationItem = undefined;
-        this._pendingActivationTimeout = undefined;
-        item.fire(this.activateEvent, null, {
-          bubbles: true,
-          cancelable: true
-        });
-      },
+     /**
+      * Activates the last item given to `_scheduleActivation`.
+      */
+     _delayedActivationHandler() {
+       var item = this._pendingActivationItem;
+       this._pendingActivationItem = undefined;
+       this._pendingActivationTimeout = undefined;
+       item.fire(this.activateEvent, null, {
+         bubbles: true,
+         cancelable: true
+       });
+     }
 
-      /**
-       * Cancels a previously scheduled item activation made with
-       * `_scheduleActivation`.
-       */
-      _cancelPendingActivation: function() {
-        if (this._pendingActivationTimeout !== undefined) {
-          this.cancelAsync(this._pendingActivationTimeout);
-          this._pendingActivationItem = undefined;
-          this._pendingActivationTimeout = undefined;
-        }
-      },
+     /**
+      * Cancels a previously scheduled item activation made with
+      * `_scheduleActivation`.
+      */
+     _cancelPendingActivation() {
+       if (this._pendingActivationTimeout !== undefined) {
+         this.cancelAsync(this._pendingActivationTimeout);
+         this._pendingActivationItem = undefined;
+         this._pendingActivationTimeout = undefined;
+       }
+     }
 
-      _onArrowKeyup: function(event) {
-        if (this.autoselect) {
-          this._scheduleActivation(this.focusedItem, this.autoselectDelay);
-        }
-      },
+     _onArrowKeyup(event) {
+       if (this.autoselect) {
+         this._scheduleActivation(this.focusedItem, this.autoselectDelay);
+       }
+     }
 
-      _onBlurCapture: function(event) {
-        // Cancel a scheduled item activation (if any) when that item is
-        // blurred.
-        if (event.target === this._pendingActivationItem) {
-          this._cancelPendingActivation();
-        }
-      },
+     _onBlurCapture(event) {
+       // Cancel a scheduled item activation (if any) when that item is
+       // blurred.
+       if (event.target === this._pendingActivationItem) {
+         this._cancelPendingActivation();
+       }
+     }
 
-      _down: function(e) {
-        // go one beat async to defeat IronMenuBehavior
-        // autorefocus-on-no-selection timeout
-        this.async(function() {
-          if (this._defaultFocusAsync) {
-            this.cancelAsync(this._defaultFocusAsync);
-            this._defaultFocusAsync = null;
-          }
-        }, 1);
-      }
+     _down(e) {
+       // go one beat async to defeat IronMenuBehavior
+       // autorefocus-on-no-selection timeout
+       this.async(function() {
+         if (this._defaultFocusAsync) {
+           this.cancelAsync(this._defaultFocusAsync);
+           this._defaultFocusAsync = null;
+         }
+       }, 1);
+     }
+   }
 
-   });
+   customElements.define(BottomToolbar.is, BottomToolbar);
   </script>
 </dom-module>
