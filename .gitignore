@@ -3,3 +3,5 @@ dist
 node_modules
 build
 .tern-port
+/analysis.json
+/polymer.json
