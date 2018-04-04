@@ -66,6 +66,8 @@ $ bower install greenyouse/bottom-nav --save
 
 ```html
 <link rel="import" href="/bower_components/bottom-nav/bottom-nav.html">
+<link rel="import" href="/bower_components/bottom-nav/bottom-toolbar.html">
+<link rel="import" href="/bower_components/bottom-nav/bottom-tab.html">
 ```
 
 ## Credits
