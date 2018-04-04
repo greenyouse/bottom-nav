@@ -25,13 +25,20 @@
     </test-fixture>
 
     <script>
+      function waitForIronItemsChanged(selector, callback) {
+        selector.addEventListener('iron-items-changed', function onIronItemsChanged() {
+          selector.removeEventListener('iron-items-changed', onIronItemsChanged);
+          callback();
+        })
+      }
 
       suite('set the selected attribute', function() {
 
         var tabs;
 
-        setup(function () {
+        setup(function (done) {
           tabs = fixture('basic');
+          waitForIronItemsChanged(tabs, done);
         });
 
         test('selected value', function() {
@@ -49,10 +56,13 @@
 
         var tabs, tab;
 
-        setup(function () {
+        setup(function (done) {
           tabs = fixture('basic');
-          tab = tabs.querySelector('[name=zot]');
-          tab.dispatchEvent(new CustomEvent('click', {bubbles: true}));
+          waitForIronItemsChanged(tabs, function() {
+            tab = tabs.querySelector('[name=zot]');
+            tab.dispatchEvent(new CustomEvent('click', {bubbles: true}));
+            done();
+          });
         });
 
         test('selected value', function() {
@@ -60,7 +70,6 @@
         });
 
         test('selected tab has iron-selected class', function() {
-          Polymer.dom.flush();
           assert.isTrue(tab.classList.contains('iron-selected'));
         });
 

@@ -59,6 +59,15 @@
     </test-fixture>
 
     <script>
+      function waitForIronItemsChanged(selector, callback) {
+        selector.addEventListener('iron-items-changed', function onIronItemsChanged() {
+          selector.removeEventListener('iron-items-changed', onIronItemsChanged);
+          /* FIXME: bug in anchors for paper-tabs, fix with upstream patch later
+             https://github.com/PolymerElements/paper-tabs/issues/155
+             minor delay for async actions to complete */
+          setTimeout(callback, 100);
+        })
+      }
 
       suite('links', function() {
 
@@ -67,10 +76,13 @@
           var tabs;
           var tab, anchor;
 
-          setup(function () {
+          setup(function(done) {
             tabs = fixture('links');
-            tab = tabs.querySelectorAll('bottom-tab')[1];
-            anchor = tab.querySelector('a');
+            waitForIronItemsChanged(tabs, function() {
+              tab = tabs.querySelectorAll('bottom-tab')[1];
+              anchor = tab.querySelector('a');
+              done();
+            });
           });
 
           test('pressing enter on tab causes anchor click', function(done) {
@@ -102,10 +114,13 @@
           var tabs;
           var tab, anchor;
 
-          setup(function () {
+          setup(function(done) {
             tabs = fixture('not-links');
-            tab = tabs.querySelectorAll('bottom-tab')[1];
-            anchor = tab.querySelector('a');
+            waitForIronItemsChanged(tabs, function() {
+              tab = tabs.querySelectorAll('bottom-tab')[1];
+              anchor = tab.querySelector('a');
+              done();
+            });
           });
 
           test('pressing enter on tab does not cause anchor click', function(done) {
@@ -127,10 +142,13 @@
           var tabs;
           var tab, anchor;
 
-          setup(function () {
+          setup(function(done) {
             tabs = fixture('links');
-            tab = tabs.querySelectorAll('bottom-tab')[1];
-            anchor = tab.querySelector('a');
+            waitForIronItemsChanged(tabs, function() {
+              tab = tabs.querySelectorAll('bottom-tab')[1];
+              anchor = tab.querySelector('a');
+              done();
+            });
           });
 
           test('pressing enter on tab causes anchor click', function(done) {
