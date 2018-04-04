@@ -200,7 +200,7 @@
       * Fire an event to update the CSS class of the parent element.
       */
      _updateClass() {
-       details = {className: this.selectedClass};
+       var details = {className: this.selectedClass};
        this.fire('bottom-tab-update-class', details);
      }
 
