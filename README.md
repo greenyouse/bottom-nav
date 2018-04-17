@@ -6,7 +6,7 @@ Bottom navigation for mobile that follows the [Material Design specification](ht
 ```
 <custom-element-demo>
   <template>
-    <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../app-layout/demo/sample-content.html">
     <link rel="import" href="../iron-icons/av-icons.html">
     <link rel="import" href="../iron-icons/iron-icons.html">
